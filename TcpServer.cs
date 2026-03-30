@@ -30,7 +30,8 @@ namespace NetworkProgrammServer
             {
                 var listener = new TcpListener(IPAddress.Any, TcpPort);
                 listener.Start();
-               
+                Console.WriteLine("Ожидание подключений...");
+
                 Console.WriteLine("Ожидание клиентов...");
 
                 while (true)
@@ -117,8 +118,10 @@ namespace NetworkProgrammServer
             byte[] data = Encoding.UTF8.GetBytes(message);
             byte[] header = BitConverter.GetBytes(data.Length);
 
+            int userCount;
             lock (Clients)
             {
+                userCount = Clients.Count;
                 for (int i = Clients.Count - 1; i >= 0; i--)
                 {
                     try
@@ -126,6 +129,27 @@ namespace NetworkProgrammServer
                         var stream = Clients[i];
                         stream.Write(header, 0, 4);
                         stream.Write(data, 0, data.Length);
+                    }
+                    catch
+                    {
+                        Clients.RemoveAt(i);
+                    }
+                }
+            }
+
+            string countMessage = $"Пользователи {userCount}";
+            byte[] countData = Encoding.UTF8.GetBytes(countMessage);
+            byte[] countHeader = BitConverter.GetBytes(countData.Length);
+
+            lock (Clients)
+            {
+                for (int i = Clients.Count - 1; i >= 0; i--)
+                {
+                    try
+                    {
+                        var stream = Clients[i];
+                        stream.Write(countHeader, 0, 4);
+                        stream.Write(countData, 0, countData.Length);
                     }
                     catch
                     {

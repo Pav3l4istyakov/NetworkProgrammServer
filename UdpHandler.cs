@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NetworkProgrammServer
 {
-    public class UdpHandler : IDisposable
+    public class UdpHandler
     {
         private UdpClient UdpClient;
         private int Port;
@@ -23,7 +23,7 @@ namespace NetworkProgrammServer
             try
             {
                 UdpClient = new UdpClient(Port);
-               
+
 
                 while (true)
                 {
@@ -38,13 +38,13 @@ namespace NetworkProgrammServer
             }
             catch (Exception ex)
             {
-                Console.WriteLine($" Ошибка UDP: {ex.Message}");
+                Console.WriteLine($"Ошибка UDP: {ex.Message}");
             }
         }
 
         public void Dispose()
         {
-            UdpClient?.Dispose();
+            UdpClient.Dispose();
         }
     }
 }
