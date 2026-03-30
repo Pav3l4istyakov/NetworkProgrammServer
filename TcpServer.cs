@@ -23,7 +23,6 @@ namespace NetworkProgrammServer
 
         public async Task StartAsync()
         {
-            
             var backgroundUdpTask = UdpHandler.StartAsync();
 
             try
@@ -31,8 +30,6 @@ namespace NetworkProgrammServer
                 var listener = new TcpListener(IPAddress.Any, TcpPort);
                 listener.Start();
                 Console.WriteLine("Ожидание подключений...");
-
-                Console.WriteLine("Ожидание клиентов...");
 
                 while (true)
                 {
@@ -44,18 +41,18 @@ namespace NetworkProgrammServer
                         Clients.Add(stream);
                     }
 
-                    Console.WriteLine($" Подключён: {client.Client.RemoteEndPoint}");
+                    Console.WriteLine($"Подключён клиент: {client.Client.RemoteEndPoint}");
 
                     Task.Run(() => ProcessClient(stream, client));
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($" Ошибка сервера: {ex.Message}");
+                Console.WriteLine($"Ошибка сервера: {ex.Message}");
             }
         }
 
-        private void ProcessClient(NetworkStream stream, TcpClient client)
+        private void ProcessClient(NetworkStream stream, System.Net.Sockets.TcpClient client)
         {
             try
             {
@@ -66,14 +63,7 @@ namespace NetworkProgrammServer
                     {
                         break;
                     }
-
-                    string response = $"OFFLINE";
-                    SendMessageToAllClients(response);
                 }
-            }
-            catch
-            {
-                
             }
             finally
             {

@@ -24,17 +24,12 @@ namespace NetworkProgrammServer
             {
                 UdpClient = new UdpClient(Port);
 
-
                 while (true)
                 {
                     var result = await UdpClient.ReceiveAsync();
                     string message = Encoding.UTF8.GetString(result.Buffer);
                     OnUserEventReceived?.Invoke(this, message);
                 }
-            }
-            catch (ObjectDisposedException)
-            {
-                
             }
             catch (Exception ex)
             {
