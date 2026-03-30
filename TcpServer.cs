@@ -29,7 +29,7 @@ namespace NetworkProgrammServer
             {
                 var listener = new TcpListener(IPAddress.Any, TcpPort);
                 listener.Start();
-                Console.WriteLine("Ожидание подключений...");
+                Console.WriteLine("Ожидание подключений..");
 
                 while (true)
                 {
@@ -68,7 +68,7 @@ namespace NetworkProgrammServer
             finally
             {
                 RemoveClient(stream);
-                client?.Close();
+                client.Close();
             }
         }
 
@@ -107,7 +107,6 @@ namespace NetworkProgrammServer
         {
             byte[] data = Encoding.UTF8.GetBytes(message);
             byte[] header = BitConverter.GetBytes(data.Length);
-
             int userCount;
             lock (Clients)
             {

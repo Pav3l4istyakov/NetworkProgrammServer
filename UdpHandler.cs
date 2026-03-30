@@ -28,7 +28,7 @@ namespace NetworkProgrammServer
                 {
                     var result = await UdpClient.ReceiveAsync();
                     string message = Encoding.UTF8.GetString(result.Buffer);
-                    OnUserEventReceived?.Invoke(this, message);
+                    OnUserEventReceived.Invoke(this, message);
                 }
             }
             catch (Exception ex)
